@@ -19,7 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Downloads\01_hello_SDL\01_hello_SDL\main.cpp" />
+    <ClCompile Include="TetrisClone\main.cpp" />
+    <ClCompile Include="TetrisClone\Tetromino.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TetrisClone\Tetromino.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -1,6 +1,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <stdio.h>
+#include "Tetromino.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -11,8 +12,8 @@ SDL_Renderer* renderer;
 void renderTetrisGrid()
 {
 
-    SDL_FRect outlineRect = { 50, 50, 200, 400 };
-
+    SDL_FRect outlineRect = { 49, 49, 201, 401 };
+    
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 1.0);
 
     SDL_RenderRect(renderer, &outlineRect);
@@ -66,6 +67,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    Square square;
 
     while (!done) {
         SDL_Event event;
@@ -74,31 +76,17 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_EVENT_QUIT) {
                 done = true;
             }
-            /*
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-            SDL_Vertex vertices[4] = {
-                {{100, 100}, {255, 0, 0, 255}, {0,0}},//top left
-                {{200, 100}, {255, 0, 0, 255}, {0,0}},//top right
-                {{100, 50},  {255, 0, 0, 255}, {0,0}},//bottom left
-                {{200, 50},  {255, 0, 0, 255}, {0,0}}//bottom right
-            };
-
-            int indices[6] = {
-                0, 2, 3, //first triangle
-                0, 1, 3 //second triangle
-            };
-
-            SDL_RenderGeometry(renderer, nullptr, vertices, 4, indices, 6);
-            */
         }
-        SDL_RenderPresent(renderer);
-
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //background colour
+        SDL_RenderClear(renderer);
+        Gravity(square);
+        square.Render(renderer);
         renderTetrisGrid();
+        SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyWindow(window);
-
     SDL_Quit();
     return 0;
 }
