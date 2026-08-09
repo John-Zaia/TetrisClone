@@ -98,12 +98,34 @@ SShape::SShape()
     };
 }
 
-/*
+
 LShape::LShape()
 {
+    vertices = {
+        //left rectangle
+        {{50, 110}, {255, 165, 0, 255}, {0,0}},//top left
+        {{70, 110},{255, 165, 0, 255}, {0,0}},//top right
+        {{50, 50}, {255, 165, 0, 255}, {0,0}},//bottom left
+        {{70, 50},{255, 165, 0, 255}, {0,0}},//bottom right
 
+        //bottom-right square
+        {{70, 110}, {255, 165, 0, 255}, {0,0}},//top left
+        {{90, 110}, {255, 165, 0, 255}, {0,0}},//top right
+        {{70, 90}, {255, 165, 0, 255}, {0,0}},//bottom left
+        {{90, 90}, {255, 165, 0, 255}, {0,0}},//bottom right
+    };
+
+    indices = {
+        //left rectangle
+        0, 2, 3, //first triangle
+        0, 1, 3, //second triangle
+
+        //bottom-right square
+        4, 6, 7,//first triangle
+        4, 5, 7,//second triangle
+    };
 }
-*/
+
 
 void Gravity(Tetromino& t)
 {

@@ -71,6 +71,7 @@ int main(int argc, char* argv[]) {
     Rectangle rectangle;
     TShape tShape;
     SShape sShape;
+    LShape lShape;
 
     while (!done) {
         SDL_Event event;
@@ -84,8 +85,11 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //background colour
         SDL_RenderClear(renderer);
 
-        Gravity(sShape);
-        sShape.Render(renderer);
+        Gravity(lShape);
+        lShape.Render(renderer);
+
+        //Gravity(sShape);
+        //sShape.Render(renderer);
 
         //Gravity(square);
         //square.Render(renderer);

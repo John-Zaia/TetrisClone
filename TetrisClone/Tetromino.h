@@ -33,15 +33,15 @@ class TShape : public Tetromino
 
 class SShape : public Tetromino
 {
-public:
-    SShape();
+    public:
+        SShape();
 };
 
-/*
+
 class LShape : public Tetromino
 {
-
+    public:
+        LShape();
 };
-*/
 
 void Gravity(Tetromino& t);
