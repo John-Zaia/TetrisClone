@@ -1,4 +1,5 @@
 #include "Tetromino.h"
+#include <random>
 
 void Tetromino::Render(SDL_Renderer* renderer)
 {
@@ -138,5 +139,39 @@ void Gravity(Tetromino& t)
             t.vertices[i].position.y += 20.0f;
         }
         t.lastTime = currentTime;
+    }
+}
+
+Tetromino generateRandomTetromino()
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> distrib(1, 5);
+    int randomNumber = distrib(gen);
+
+    if (randomNumber == 1)
+    {
+        Square square;
+        return square;
+    }
+    else if (randomNumber == 2)
+    {
+        Rectangle rectangle;
+        return rectangle;
+    }
+    else if (randomNumber == 3)
+    {
+        TShape tShape;
+        return tShape;
+    }
+    else if (randomNumber == 4)
+    {
+        SShape sShape;
+        return sShape;
+    }
+    else
+    {
+        LShape lShape;
+        return lShape;
     }
 }

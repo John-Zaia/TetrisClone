@@ -67,11 +67,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    Square square;
-    Rectangle rectangle;
-    TShape tShape;
-    SShape sShape;
-    LShape lShape;
+    Tetromino randomTetromino = generateRandomTetromino();
 
     while (!done) {
         SDL_Event event;
@@ -85,20 +81,8 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //background colour
         SDL_RenderClear(renderer);
 
-        Gravity(lShape);
-        lShape.Render(renderer);
-
-        //Gravity(sShape);
-        //sShape.Render(renderer);
-
-        //Gravity(square);
-        //square.Render(renderer);
-
-        //Gravity(rectangle);
-        //rectangle.Render(renderer);
-
-        //Gravity(tShape);
-        //tShape.Render(renderer);
+        Gravity(randomTetromino);
+        randomTetromino.Render(renderer);
 
         renderTetrisGrid();
         SDL_RenderPresent(renderer);

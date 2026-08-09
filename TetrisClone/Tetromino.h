@@ -45,3 +45,5 @@ class LShape : public Tetromino
 };
 
 void Gravity(Tetromino& t);
+
+Tetromino generateRandomTetromino();
