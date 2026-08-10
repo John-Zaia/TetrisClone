@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TetrisClone\Input.cpp" />
     <ClCompile Include="TetrisClone\main.cpp" />
     <ClCompile Include="TetrisClone\Tetromino.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TetrisClone\Input.h" />
     <ClInclude Include="TetrisClone\Tetromino.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

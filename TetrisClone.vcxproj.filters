@@ -21,9 +21,15 @@
     <ClCompile Include="TetrisClone\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TetrisClone\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TetrisClone\Tetromino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisClone\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,6 +2,7 @@
 #include <SDL3/SDL_main.h>
 #include <stdio.h>
 #include "Tetromino.h"
+#include "Input.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -68,21 +69,39 @@ int main(int argc, char* argv[]) {
     }
 
     Tetromino randomTetromino = generateRandomTetromino();
+    Input input;
 
     while (!done) {
-        SDL_Event event;
-
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT) {
-                done = true;
-            }
-
-        }
+        input.Update();
+            
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //background colour
         SDL_RenderClear(renderer);
 
         Gravity(randomTetromino);
         randomTetromino.Render(renderer);
+
+
+        if (input.MoveLeft() )
+        {
+            for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
+            {
+                randomTetromino.vertices[i].position.x -= 20.0f;
+            }
+        }
+        else if (input.MoveRight())
+        {
+            for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
+            {
+                randomTetromino.vertices[i].position.x += 20.0f;
+            }
+        }
+        else if (input.MoveDown())
+        {
+            for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
+            {
+                randomTetromino.vertices[i].position.y += 20.0f;
+            }
+        }
 
         renderTetrisGrid();
         SDL_RenderPresent(renderer);
