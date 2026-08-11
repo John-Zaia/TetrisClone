@@ -175,3 +175,41 @@ Tetromino generateRandomTetromino()
         return lShape;
     }
 }
+
+const float GRID_ORIGIN_X = 50.0f;
+const float GRID_ORIGIN_Y = 50.0f;
+const int   GRID_COLS = 10;
+const int   GRID_ROWS = 20;
+const float CELL_SIZE = 20.0f;
+
+Bounds getBounds(const Tetromino& t)
+{
+    float minX = t.vertices[0].position.x;
+    float maxX = t.vertices[0].position.x;
+    float minY = t.vertices[0].position.y;
+    float maxY = t.vertices[0].position.y;
+
+    for (const auto& v : t.vertices)
+    {
+        minX = SDL_min(minX, v.position.x);
+        maxX = SDL_max(maxX, v.position.x);
+        minY = SDL_min(minY, v.position.y);
+        maxY = SDL_max(maxY, v.position.y);
+    }
+
+    return Bounds{ minX, maxX, minY, maxY };
+}
+
+bool hitsFloor(const Tetromino& t)
+{
+    Bounds b = getBounds(t);
+    return b.bottom >= GRID_ORIGIN_Y + GRID_ROWS * CELL_SIZE; 
+}
+
+bool canMoveHorizontal(const Tetromino& t, float dx)
+{
+    Bounds b = getBounds(t);
+    float newLeft = b.left + dx;
+    float newRight = b.right + dx;
+    return newLeft >= GRID_ORIGIN_X && newRight <= GRID_ORIGIN_X + GRID_COLS * CELL_SIZE;
+}

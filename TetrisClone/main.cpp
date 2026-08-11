@@ -68,8 +68,9 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    Tetromino randomTetromino = generateRandomTetromino();
+    Tetromino randomTetromino;
     Input input;
+    randomTetromino = generateRandomTetromino();
 
     while (!done) {
         input.Update();
@@ -77,25 +78,29 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //background colour
         SDL_RenderClear(renderer);
 
-        Gravity(randomTetromino);
+        if (!hitsFloor(randomTetromino))
+        {
+            Gravity(randomTetromino);
+        }
+
         randomTetromino.Render(renderer);
 
 
-        if (input.MoveLeft() )
+        if (input.MoveLeft() && canMoveHorizontal(randomTetromino, -20.0f))
         {
             for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
             {
-                randomTetromino.vertices[i].position.x -= 20.0f;
+                    randomTetromino.vertices[i].position.x -= 20.0f;
             }
         }
-        else if (input.MoveRight())
+        else if (input.MoveRight() && canMoveHorizontal(randomTetromino, +20.0f))
         {
             for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
             {
-                randomTetromino.vertices[i].position.x += 20.0f;
+                    randomTetromino.vertices[i].position.x += 20.0f;
             }
         }
-        else if (input.MoveDown())
+        else if (input.MoveDown() && !hitsFloor(randomTetromino))
         {
             for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
             {

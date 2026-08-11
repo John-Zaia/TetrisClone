@@ -44,6 +44,20 @@ class LShape : public Tetromino
         LShape();
 };
 
+struct Bounds
+{
+    float left;
+    float right;
+    float top;
+    float bottom;
+};
+
+Bounds getBounds(const Tetromino& t);
+
+bool hitsFloor(const Tetromino& t);
+
+bool canMoveHorizontal(const Tetromino& t, float dx);
+
 void Gravity(Tetromino& t);
 
 Tetromino generateRandomTetromino();
