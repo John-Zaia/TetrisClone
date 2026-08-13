@@ -1,4 +1,5 @@
 #include "Tetromino.h"
+#include "Grid.h"
 #include <random>
 
 void Tetromino::Render(SDL_Renderer* renderer)
@@ -175,12 +176,6 @@ Tetromino generateRandomTetromino()
         return lShape;
     }
 }
-
-const float GRID_ORIGIN_X = 50.0f;
-const float GRID_ORIGIN_Y = 50.0f;
-const int   GRID_COLS = 10;
-const int   GRID_ROWS = 20;
-const float CELL_SIZE = 20.0f;
 
 Bounds getBounds(const Tetromino& t)
 {

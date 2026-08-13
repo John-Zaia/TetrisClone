@@ -26,7 +26,8 @@ int main(int argc, char* argv[]) {
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window: %s\n", SDL_GetError());
         return 1;
     }
-
+    
+    InitGrid();
     Tetromino randomTetromino;
     Input input;
     randomTetromino = generateRandomTetromino();
@@ -68,6 +69,7 @@ int main(int argc, char* argv[]) {
         }
 
         renderTetrisGrid(renderer);
+        renderBoard(renderer);
         SDL_RenderPresent(renderer);
     }
 

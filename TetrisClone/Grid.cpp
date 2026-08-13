@@ -1,35 +1,60 @@
 #include "Grid.h"
 
+int board[GRID_ROWS][GRID_COLS];
+
+void InitGrid()
+{
+	for (int row = 0; row < GRID_ROWS; row++)
+	{
+		for (int col = 0; col < GRID_COLS; col++)
+		{
+			board[row][col] = 0;
+		}
+	}
+}
+
+void renderBoard(SDL_Renderer* renderer)
+{
+	for (int row = 0; row < GRID_ROWS; row++)
+	{
+		for (int col = 0; col < GRID_COLS; col++)
+		{
+			if (board[row][col] == 0) continue;
+
+			SDL_FRect cellRect = {
+				GRID_ORIGIN_X + col * CELL_SIZE,
+				GRID_ORIGIN_Y + row * CELL_SIZE,
+				CELL_SIZE,
+				CELL_SIZE
+			};
+
+			SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+			SDL_RenderFillRect(renderer, &cellRect);
+		}
+	}
+}
+
 void renderTetrisGrid(SDL_Renderer* renderer)
 {
-    SDL_FRect outlineRect = { 49, 49, 201, 401 };
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 1.0);
+	SDL_FRect outlineRect = {
+		GRID_ORIGIN_X - 1,
+		GRID_ORIGIN_Y - 1,
+		GRID_COLS * CELL_SIZE + 2,
+		GRID_ROWS * CELL_SIZE + 2
+	};
+	SDL_RenderRect(renderer, &outlineRect);
 
-    SDL_RenderRect(renderer, &outlineRect);
+	for (int row = 0; row <= GRID_ROWS; row++)
+	{
+		float y = GRID_ORIGIN_Y + row * CELL_SIZE;
+		SDL_RenderLine(renderer, GRID_ORIGIN_X, y, GRID_ORIGIN_X + GRID_COLS * CELL_SIZE, y);
+	}
 
-    float x1 = 50.0f;
-    float y1 = 70.0f;
-    float x2 = 250.0f;
-    float y2 = 70.0f;
-
-    //Render horizontal lines
-    for (int i = 0; i < 19; i++)
-    {
-        SDL_RenderLine(renderer, x1, y1, x2, y2);
-        y1 += 20.0f;
-        y2 += 20.0f;
-    }
-
-    //Render vertical lines
-    float vx1 = 70.0f;
-    float vy1 = 50.0f;
-    float vx2 = 70.0f;
-    float vy2 = 450.0f;
-    for (int i = 0; i < 9; i++)
-    {
-        SDL_RenderLine(renderer, vx1, vy1, vx2, vy2);
-        vx1 += 20.0f;
-        vx2 += 20.0f;
-    }
+	for (int col = 0; col <= GRID_COLS; col++)
+	{
+		float x = GRID_ORIGIN_X + col * CELL_SIZE;
+		SDL_RenderLine(renderer, x, GRID_ORIGIN_Y, x, GRID_ORIGIN_Y + GRID_ROWS * CELL_SIZE);
+	}
 }
