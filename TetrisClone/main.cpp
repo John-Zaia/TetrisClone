@@ -45,27 +45,17 @@ int main(int argc, char* argv[]) {
 
         randomTetromino.Render(renderer);
 
-
-        if (input.MoveLeft() && canMoveHorizontal(randomTetromino, -20.0f))
+        if (input.MoveLeft() && canMoveHorizontal(randomTetromino, -1))
         {
-            for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
-            {
-                    randomTetromino.vertices[i].position.x -= 20.0f;
-            }
+            randomTetromino.anchorCol -= 1;
         }
-        else if (input.MoveRight() && canMoveHorizontal(randomTetromino, +20.0f))
+        else if (input.MoveRight() && canMoveHorizontal(randomTetromino, +1))
         {
-            for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
-            {
-                    randomTetromino.vertices[i].position.x += 20.0f;
-            }
+            randomTetromino.anchorCol += 1;
         }
-        else if (input.MoveDown() && !hitsFloor(randomTetromino))
+        else if (input.MoveDown() && !hitsFloor(randomTetromino) && !collidesWithBoard(randomTetromino))
         {
-            for (int i = 0; i < static_cast<int>(randomTetromino.vertices.size()); i++)
-            {
-                randomTetromino.vertices[i].position.y += 20.0f;
-            }
+            randomTetromino.anchorRow += 1;
         }
 
         renderTetrisGrid(renderer);

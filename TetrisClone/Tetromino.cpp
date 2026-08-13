@@ -2,143 +2,66 @@
 #include "Grid.h"
 #include <random>
 
-void Tetromino::Render(SDL_Renderer* renderer)
+void Tetromino::Render(SDL_Renderer* renderer) const
 {
-    SDL_RenderGeometry(
-        renderer,
-        nullptr,
-        vertices.data(),
-        vertices.size(),
-        indices.data(),
-        indices.size()
-    );
+    switch (colorId)
+    {
+    case 1: SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); break;   // red
+    case 2: SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255); break; // cyan
+    case 3: SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255); break; // purple
+    case 4: SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); break;   // green
+    case 5: SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255); break; // orange
+    default: SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); break;
+    }
+
+    for (auto& cell : OccupiedCells())
+    {
+        SDL_FRect rect = {
+            GRID_ORIGIN_X + cell.col * CELL_SIZE,
+            GRID_ORIGIN_Y + cell.row * CELL_SIZE,
+            CELL_SIZE,
+            CELL_SIZE
+        };
+        SDL_RenderFillRect(renderer, &rect);
+    }
 }
 
 Square::Square()
 {
-    vertices = {
-        {{50, 90}, {255, 0, 0, 255}, {0,0}},//top left
-        {{90, 90}, {255, 0, 0, 255}, {0,0}},//top right
-        {{50, 50}, {255, 0, 0, 255}, {0,0}},//bottom left
-        {{90, 50}, {255, 0, 0, 255}, {0,0}},//bottom right
-    };
-
-    indices = {
-        0, 2, 3, //first triangle
-        0, 1, 3, //second triangle
-    };
+    cells = { { {0,0}, {0,1}, {1,0}, {1,1} } };
+    colorId = 1;
 }
 
 Rectangle::Rectangle()
 {
-    vertices = {
-        {{50, 130}, {0, 255, 255, 255}, {0,0}},//top left
-        {{70, 130}, {0, 255, 255, 255}, {0,0}},//top right
-        {{50, 50}, {0, 255, 255, 255}, {0,0}},//bottom left
-        {{70, 50}, {0, 255, 255, 255}, {0,0}},//bottom right
-    };
-
-    indices = {
-        0, 2, 3, //first triangle
-        0, 1, 3, //second triangle
-    };
+    cells = { { {0,0}, {1,0}, {2,0}, {3,0} } };
+    colorId = 2;
 }
-
 
 TShape::TShape()
 {
-    vertices = {
-    //top square
-        {{70, 70}, {255, 0, 255, 255}, {0,0}},//top left
-        {{90, 70}, {255, 0, 255, 255}, {0,0}},//top right
-        {{70, 50}, {255, 0, 255, 255}, {0,0}},//bottom left
-        {{90, 50}, {255, 0, 255, 255}, {0,0}},//bottom right
-
-    //bottom rectangle
-        {{50, 90}, {255, 0, 255, 255}, {0,0}},//top left
-        {{110, 90}, {255, 0, 255, 255}, {0,0}},//top right
-        {{50, 70}, {255, 0, 255, 255}, {0,0}},//bottom left
-        {{110, 70}, {255, 0, 255, 255}, {0,0}},//bottom right
-    };
-
-
-    indices = {
-        //top square
-        0, 2, 3, //first triangle
-        0, 1, 3, //second triangle
-
-        //bottom rectangle
-        4, 6, 7,//first triangle
-        4, 5, 7,//second triangle
-    };
+    cells = { { {0,0}, {0,1}, {0,2}, {1,1} } };
+    colorId = 3;
 }
 
 SShape::SShape()
 {
-    vertices = {
-        //top rectangle
-            {{70, 70}, {0, 255, 0, 255}, {0,0}},//top left
-            {{110, 70}, {0, 255, 0, 255}, {0,0}},//top right
-            {{70, 50}, {0, 255, 0, 255}, {0,0}},//bottom left
-            {{110, 50}, {0, 255, 0, 255}, {0,0}},//bottom right
-
-        //bottom rectangle
-            {{50, 90}, {0, 255, 0, 255}, {0,0}},//top left
-            {{90, 90}, {0, 255, 0, 255}, {0,0}},//top right
-            {{50, 70}, {0, 255, 0, 255}, {0,0}},//bottom left
-            {{90, 70}, {0, 255, 0, 255}, {0,0}},//bottom right
-    };
-
-    indices = {
-        //top rectangle
-        0, 2, 3, //first triangle
-        0, 1, 3, //second triangle
-
-        //bottom rectangle
-        4, 6, 7,//first triangle
-        4, 5, 7,//second triangle
-    };
+    cells = { { {0,1}, {0,2}, {1,0}, {1,1} } };
+    colorId = 4;
 }
-
 
 LShape::LShape()
 {
-    vertices = {
-        //left rectangle
-        {{50, 110}, {255, 165, 0, 255}, {0,0}},//top left
-        {{70, 110},{255, 165, 0, 255}, {0,0}},//top right
-        {{50, 50}, {255, 165, 0, 255}, {0,0}},//bottom left
-        {{70, 50},{255, 165, 0, 255}, {0,0}},//bottom right
-
-        //bottom-right square
-        {{70, 110}, {255, 165, 0, 255}, {0,0}},//top left
-        {{90, 110}, {255, 165, 0, 255}, {0,0}},//top right
-        {{70, 90}, {255, 165, 0, 255}, {0,0}},//bottom left
-        {{90, 90}, {255, 165, 0, 255}, {0,0}},//bottom right
-    };
-
-    indices = {
-        //left rectangle
-        0, 2, 3, //first triangle
-        0, 1, 3, //second triangle
-
-        //bottom-right square
-        4, 6, 7,//first triangle
-        4, 5, 7,//second triangle
-    };
+    cells = { { {0,0}, {1,0}, {2,0}, {2,1} } };
+    colorId = 5;
 }
-
 
 void Gravity(Tetromino& t)
 {
     Uint64 currentTime = SDL_GetTicks();
-
     if (currentTime - t.lastTime >= 1000)
     {
-        for (int i = 0; i < static_cast<int>(t.vertices.size()); i++)
-        {
-            t.vertices[i].position.y += 20.0f;
-        }
+        t.anchorRow += 1;
         t.lastTime = currentTime;
     }
 }
@@ -150,61 +73,45 @@ Tetromino generateRandomTetromino()
     std::uniform_int_distribution<int> distrib(1, 5);
     int randomNumber = distrib(gen);
 
-    if (randomNumber == 1)
-    {
-        Square square;
-        return square;
-    }
-    else if (randomNumber == 2)
-    {
-        Rectangle rectangle;
-        return rectangle;
-    }
-    else if (randomNumber == 3)
-    {
-        TShape tShape;
-        return tShape;
-    }
-    else if (randomNumber == 4)
-    {
-        SShape sShape;
-        return sShape;
-    }
-    else
-    {
-        LShape lShape;
-        return lShape;
-    }
-}
-
-Bounds getBounds(const Tetromino& t)
-{
-    float minX = t.vertices[0].position.x;
-    float maxX = t.vertices[0].position.x;
-    float minY = t.vertices[0].position.y;
-    float maxY = t.vertices[0].position.y;
-
-    for (const auto& v : t.vertices)
-    {
-        minX = SDL_min(minX, v.position.x);
-        maxX = SDL_max(maxX, v.position.x);
-        minY = SDL_min(minY, v.position.y);
-        maxY = SDL_max(maxY, v.position.y);
-    }
-
-    return Bounds{ minX, maxX, minY, maxY };
+    if (randomNumber == 1) { Square s; return s; }
+    else if (randomNumber == 2) { Rectangle r; return r; }
+    else if (randomNumber == 3) { TShape t; return t; }
+    else if (randomNumber == 4) { SShape s; return s; }
+    else { LShape l; return l; }
 }
 
 bool hitsFloor(const Tetromino& t)
 {
-    Bounds b = getBounds(t);
-    return b.bottom >= GRID_ORIGIN_Y + GRID_ROWS * CELL_SIZE; 
+    for (auto& cell : t.OccupiedCells())
+        if (cell.row + 1 >= GRID_ROWS)
+            return true;
+    return false;
 }
 
-bool canMoveHorizontal(const Tetromino& t, float dx)
+bool canMoveHorizontal(const Tetromino& t, int dCol)
 {
-    Bounds b = getBounds(t);
-    float newLeft = b.left + dx;
-    float newRight = b.right + dx;
-    return newLeft >= GRID_ORIGIN_X && newRight <= GRID_ORIGIN_X + GRID_COLS * CELL_SIZE;
+    for (auto& cell : t.OccupiedCells())
+    {
+        int newCol = cell.col + dCol;
+        if (newCol < 0 || newCol >= GRID_COLS)
+            return false;
+    }
+    return true;
+}
+
+bool collidesWithBoard(const Tetromino& t)
+{
+    for (auto& cell : t.OccupiedCells())
+    {
+        if (cell.row + 1 >= GRID_ROWS) continue;
+        if (board[cell.row + 1][cell.col] != 0)
+            return true;
+    }
+    return false;
+}
+
+void lockPiece(const Tetromino& t)
+{
+    for (auto& cell : t.OccupiedCells())
+        board[cell.row][cell.col] = t.colorId;
 }
